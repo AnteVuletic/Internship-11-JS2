@@ -4,7 +4,7 @@ let contentWrapper = document.querySelector(".main__offers");
 let content = [
     {
         img: "./assets/images/offer.jpg",
-        description:"TALLU",
+        description:"TALL",
         paragraph:"Wrangler small logo crew neck t-shirt in white",
         price:"£16.63"
     },
@@ -54,6 +54,15 @@ let content = [
 
 AddContent(contentWrapper,content);
 BuildFilterItem(dropdown,[{type:"Grey",count:1014},{type:"Navy",count: 1014},{type:"Blue",count:1014},{type:"Green",count:1014}]);
+contentWrapper.addEventListener('mouseover',(event)=>{
+    let prevItem = contentWrapper.querySelector(".item__img-description--show");
+    if(prevItem)
+        prevItem.classList.remove("item__img-description--show");
+    if(event.target.classList == "item__img"){
+        event.path[1].querySelector(".item__img-description").classList.add("item__img-description--show");
+    }
+    return event;
+});
 
 function BuildFilterItem(wrapper,items){ 
     items.sort((itemOne,itemTwo)=>{
@@ -90,16 +99,5 @@ function AddContent(contentWrapper,itemInfo){
     itemInfo.forEach((item)=>{
         contentWrapper.innerHTML += item.html;
     });
+    return true;
 }
-{/* <li class="dropdown__list__item">
-Navy <span class="list__item__count">(1014)</span>
-</li>
-<li class="dropdown__list__item">
-Grey <span class="list__item__count">(1014)</span>
-</li>
-<li class="dropdown__list__item">
-Green <span class="list__item__count">(1014)</span>
-</li>
-<li class="dropdown__list__item">
-Red <span class="list__item__count">(1014)</span>
-</li> */}

@@ -15,13 +15,13 @@
     z-index: 0;
 }
 
-.offers__item:hover .item__heart-full {
+.offers__item .item__heart-full {
     opacity: 1;
 }
 
-.offers__item:hover .item__img-description {
-    opacity: 1;
-    top: 297px;
+.item__img-description--show {
+    opacity: 1 !important;
+    top: 297px !important;
 }
 
 .item__paragraph {
