@@ -5,6 +5,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: stretch;
+    padding-top: 20px;
 }
 
 .offers__item {
@@ -14,9 +15,21 @@
     position: relative;
     z-index: 0;
 }
-
-.offers__item .item__heart-full {
-    opacity: 1;
+.favourites{
+    position: absolute;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    font-family: sans-serif;
+    color: gray;
+    font-weight: bold;
+}
+.item__heart-full {
+    opacity: 0;
+}
+.item__heart-full--show{
+    opacity: 1 !important;
 }
 
 .item__img-description--show {

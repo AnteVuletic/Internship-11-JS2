@@ -1,6 +1,8 @@
 let dropdown = document.querySelectorAll(".dropdown__list");
 let contentWrapper = document.querySelector(".main__offers");
-
+let favouritesCounter = 0;
+let counterHTML = document.createElement("span");
+counterHTML.classList.add("favourites")
 let content = [
     {
         img: "./assets/images/offer.jpg",
@@ -50,20 +52,74 @@ let content = [
         paragraph: "ASOS DESIGN Mickey reloxed t-shirt with retro print",
         price: "£18.08"
     }
-]
-
-AddContent(contentWrapper,content);
+];
 BuildFilterItem(dropdown,[{type:"Grey",count:1014},{type:"Navy",count: 1014},{type:"Blue",count:1014},{type:"Green",count:1014}]);
+AddContent(contentWrapper,content);
+RenderCount();
 contentWrapper.addEventListener('mouseover',(event)=>{
     let prevItem = contentWrapper.querySelector(".item__img-description--show");
     if(prevItem)
         prevItem.classList.remove("item__img-description--show");
     if(event.target.classList == "item__img"){
-        event.path[1].querySelector(".item__img-description").classList.add("item__img-description--show");
+        event.composedPath()[1].querySelector(".item__img-description").classList.add("item__img-description--show");
     }
     return event;
+},true);
+contentWrapper.addEventListener('click',(event)=>{
+    if(event.target.classList.value.includes("item__heart-full")){
+        if(event.target.classList.value.includes("item__heart-full--show")){
+            favouritesCounter--;
+            event.target.classList.remove("item__heart-full--show");
+        }else{
+            event.target.classList.add("item__heart-full--show");
+            favouritesCounter++;
+        }
+        RenderCount();
+        return;
+    }
+    for(let item of event.composedPath()){
+        if(item.classList){
+            if(item.classList.value === "offers__item"){
+                console.log(item.childNodes)
+                let htmlMarkup = `<html><head><title>${item.childNodes[7].innerText}</title></head>
+                <body>
+                <img src="${item.childNodes[1].src}" alt=""
+                    style="
+                    margin: 0 auto;
+                    border-radius: 5px;
+                    "/>
+                <p style="
+                    text-align: center;
+                    font-size: 17;
+                    font-family: sans-sarif;
+                    padding: 10px;
+                    font-weight: bold;
+                ">${item.childNodes[9].innerText}</p>
+                <span 
+                    style="
+                        display: block; 
+                        background-color: silver; 
+                        padding: 5px; 
+                        color: white;
+                        font-size: 20px; 
+                        font-weight: bolder; 
+                        margin: 0 auto; 
+                        text-align: center;
+                        font-family: sans-sarif;
+                        border-radius: 5px;">${item.childNodes[11].innerText}</span>
+                </body></head>`;
+                let newWindow = window.open("","win","width = 450,height=650");
+                newWindow.document.open("text/html","replace");
+                newWindow.document.write(htmlMarkup);
+                newWindow.document.close();
+            }
+        }
+    }
 });
-
+function RenderCount(){
+    counterHTML.innerText = "Favourties: " + favouritesCounter;
+    contentWrapper.insertBefore(counterHTML,contentWrapper.childNodes[0]);
+}
 function BuildFilterItem(wrapper,items){ 
     items.sort((itemOne,itemTwo)=>{
         if(itemOne.type > itemTwo.type)
@@ -99,5 +155,4 @@ function AddContent(contentWrapper,itemInfo){
     itemInfo.forEach((item)=>{
         contentWrapper.innerHTML += item.html;
     });
-    return true;
 }
