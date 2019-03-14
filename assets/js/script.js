@@ -85,6 +85,7 @@ contentWrapper.addEventListener('click',(event)=>{
                 <body>
                 <img src="${item.childNodes[1].src}" alt=""
                     style="
+                    display: block;
                     margin: 0 auto;
                     border-radius: 5px;
                     "/>
