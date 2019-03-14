@@ -2,60 +2,69 @@ let dropdown = document.querySelectorAll(".dropdown__list");
 let contentWrapper = document.querySelector(".main__offers");
 let favouritesCounter = 0;
 let counterHTML = document.createElement("span");
-counterHTML.classList.add("favourites")
+
+counterHTML.classList.add("favourites");
+
 let content = [
     {
         img: "./assets/images/offer.jpg",
         description:"TALL",
         paragraph:"Wrangler small logo crew neck t-shirt in white",
-        price:"£16.63"
+        price:"£16.63",
+        color: "white"
     },
     {
         img: "./assets/images/offer.jpg",
         description: "TALL",
         paragraph:"Wrangler logo chest stripe rugby polo in blue/white",
-        price:"£50.63"
+        price:"£50.63",
+        color: "blue"
     },
     {
         img: "./assets/images/offer.jpg",
         description: "TALL",
         paragraph: "Wrangler kobel retro large logo ringer t-shirt in white",
-        price:"£20.97"
+        price:"£20.97",
+        color: "white"
     },
     {
         img: "./assets/images/offer.jpg",
         description: "TALL",
         paragraph: "Lyle & Scott polo burgundy",
-        price: "£44.12"
+        price: "£44.12",
+        color: "green"
     },
     {
         img: "./assets/images/offer.jpg",
         description: "TALL",
         paragraph: "COLLUSION Unisex Long sleeve t-shirt with graphic print in neon green",
-        price: "£12.29"
+        price: "£12.29",
+        color: "green"
     },
     {
         img: "./assets/images/offer.jpg",
         description: "TALL",
         paragraph: "ASOS DESIGN Disney oversized t-shirt with rainbow",
-        price: "£22.42"
+        price: "£22.42",
+        color: "blue"
     },
     {
         img: "./assets/images/offer.jpg",
         description: "TALL",
         paragraph: "COLLUSION Unisex oversized t-shirt with back print",
-        price: "£10.12"
+        price: "£10.12",
+        color: "blue"
     },
     {
         img: "./assets/images/offer.jpg",
         description: "TALL",
         paragraph: "ASOS DESIGN Mickey reloxed t-shirt with retro print",
-        price: "£18.08"
+        price: "£18.08",
+        color: "green"
     }
 ];
 BuildFilterItem(dropdown,[{type:"Grey",count:1014},{type:"Navy",count: 1014},{type:"Blue",count:1014},{type:"Green",count:1014}]);
 AddContent(contentWrapper,content);
-RenderCount();
 contentWrapper.addEventListener('mouseover',(event)=>{
     let prevItem = contentWrapper.querySelector(".item__img-description--show");
     if(prevItem)
@@ -80,7 +89,6 @@ contentWrapper.addEventListener('click',(event)=>{
     for(let item of event.composedPath()){
         if(item.classList){
             if(item.classList.value === "offers__item"){
-                console.log(item.childNodes)
                 let htmlMarkup = `<html><head><title>${item.childNodes[7].innerText}</title></head>
                 <body>
                 <img src="${item.childNodes[1].src}" alt=""
@@ -117,6 +125,20 @@ contentWrapper.addEventListener('click',(event)=>{
         }
     }
 });
+dropdown[1].addEventListener("click",(event)=>{
+    for(let item of dropdown[1].childNodes.entries()){
+        let classList = item[1].classList;
+        if(classList)
+            if(classList.value.includes("dropdown__list__item--clicked"))
+                item[1].classList.remove("dropdown__list__item--clicked");
+    }
+    if(event.target.classList.value === "dropdown__list__item"){
+        event.target.classList.add("dropdown__list__item--clicked");
+    }
+    AddContent(contentWrapper,content.filter((item)=>{
+        return event.target.innerText.toLowerCase().includes(item.color);
+    }));
+});
 function RenderCount(){
     counterHTML.innerText = "Favourties: " + favouritesCounter;
     contentWrapper.insertBefore(counterHTML,contentWrapper.childNodes[0]);
@@ -140,6 +162,8 @@ function BuildFilterItem(wrapper,items){
 }
 
 function AddContent(contentWrapper,itemInfo){
+    contentWrapper.innerHTML = "";
+    RenderCount();
     itemInfo.map((item,index)=>{
         itemInfo[index].html =   
             `<div class="offers__item">

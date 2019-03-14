@@ -97,12 +97,11 @@ header {
     cursor: pointer;
 }
 
-.dropdown__list__item:hover {
+.dropdown__list__item--clicked {
     color: #fff;
     background: #0770CF;
 }
-
-.dropdown__list__item:hover .list__item__count {
+.dropdown__list__item--clicked .list__item__count{
     color: #F9F9F9;
 }
 
