@@ -2,6 +2,8 @@ let dropdown = document.querySelectorAll(".dropdown__list");
 let contentWrapper = document.querySelector(".main__offers");
 let favouritesCounter = 0;
 let counterHTML = document.createElement("span");
+let filteredCount = document.querySelector("#bonus");
+let filterList = [];
 
 counterHTML.classList.add("favourites");
 
@@ -126,18 +128,31 @@ contentWrapper.addEventListener('click',(event)=>{
     }
 });
 dropdown[1].addEventListener("click",(event)=>{
-    for(let item of dropdown[1].childNodes.entries()){
-        let classList = item[1].classList;
-        if(classList)
-            if(classList.value.includes("dropdown__list__item--clicked"))
-                item[1].classList.remove("dropdown__list__item--clicked");
+    console.log(event.target.classList.value)
+    if(event.target.classList.value.includes("dropdown__list__item")){
+        if(event.target.classList.value.includes("dropdown__list__item--clicked")){
+            event.target.classList.remove("dropdown__list__item--clicked");
+            let indexFound = filterList.indexOf(event.target.innerText.toLowerCase())
+            filterList.splice(indexFound,1);
+        }
+        else{
+            event.target.classList.add("dropdown__list__item--clicked");
+            filterList.push(event.target.innerText.toLowerCase());
+        }
     }
-    if(event.target.classList.value === "dropdown__list__item"){
-        event.target.classList.add("dropdown__list__item--clicked");
+    favouritesCounter = 0;
+    filteredCount.innerText = filterList.length + " selected";
+    if(filterList.length === 0){
+        AddContent(contentWrapper,content);
+    }else{
+        AddContent(contentWrapper,content.filter((item)=>{
+            for(let filter of filterList){
+                if(filter.includes(item.color))
+                    return true
+            }
+            return false;
+        }));
     }
-    AddContent(contentWrapper,content.filter((item)=>{
-        return event.target.innerText.toLowerCase().includes(item.color);
-    }));
 });
 function RenderCount(){
     counterHTML.innerText = "Favourties: " + favouritesCounter;
@@ -163,21 +178,21 @@ function BuildFilterItem(wrapper,items){
 
 function AddContent(contentWrapper,itemInfo){
     contentWrapper.innerHTML = "";
-    RenderCount();
     itemInfo.map((item,index)=>{
         itemInfo[index].html =   
-            `<div class="offers__item">
-            <img class="item__img" src=${item.img} alt="Offer" />
-            <img class="item__heart-shape" src="./assets/images/heart-shape.png" alt="Hearth Shape">
-            <img class="item__heart-full" src="./assets/images/heart-full.png" alt="Hearth Full">
-            <p class="item__img-description">${item.description}</p>
-            <p class="item__paragraph">
-                ${item.paragraph}
-            </p>
-            <span class="item__price">${item.price}</span>
-            </div>`
+        `<div class="offers__item">
+        <img class="item__img" src=${item.img} alt="Offer" />
+        <img class="item__heart-shape" src="./assets/images/heart-shape.png" alt="Hearth Shape">
+        <img class="item__heart-full" src="./assets/images/heart-full.png" alt="Hearth Full">
+        <p class="item__img-description">${item.description}</p>
+        <p class="item__paragraph">
+        ${item.paragraph}
+        </p>
+        <span class="item__price">${item.price}</span>
+        </div>`
     });
     itemInfo.forEach((item)=>{
         contentWrapper.innerHTML += item.html;
     });
+    RenderCount();
 }
