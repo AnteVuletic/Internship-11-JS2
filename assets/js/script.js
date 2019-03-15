@@ -1,3 +1,7 @@
+/*
+    NOTE TO REVIEWER: Product type dropdown is the one that has filters for items.
+*/
+
 let dropdown = document.querySelectorAll(".dropdown__list");
 let contentWrapper = document.querySelector(".main__offers");
 let counterHTML = document.createElement("span");
